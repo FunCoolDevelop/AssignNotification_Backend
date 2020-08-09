@@ -18,7 +18,7 @@ module.exports = new EntitySchema({
         categoty: {
             type: 'varchar',
             length: 50,
-            nullable: false
+            nullable: false 
         },
         subjectId: {
             type: 'bigint',
