@@ -1,2 +1,2 @@
 # AssignNotification_Express
- 과제알리미 백엔드
+This project was bootstrapped with [Expressjs](http://expressjs.com/).
