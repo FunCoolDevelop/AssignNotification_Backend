@@ -5,3 +5,4 @@ This project was bootstrapped with [expressjs](https://github.com/expressjs/expr
  - typeorm
  - puppeteer
  - puppeteer-core
+ - node-cron
