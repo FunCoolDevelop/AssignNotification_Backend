@@ -1,7 +1,7 @@
 class Assign{
-    constructor(name,categoty,subjectId,limit,id) {
+    constructor(name,category,subjectId,limit,id) {
         this.name = name;
-        this.categoty = categoty;
+        this.category = category;
         this.subjectId = subjectId;
         this.limit = limit;
         this.id = id;

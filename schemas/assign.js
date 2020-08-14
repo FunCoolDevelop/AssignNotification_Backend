@@ -15,7 +15,7 @@ module.exports = new EntitySchema({
             length: 50,
             nullable: false
         },
-        categoty: {
+        category: {
             type: 'varchar',
             length: 50,
             nullable: false 
