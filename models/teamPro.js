@@ -1,4 +1,4 @@
-class Assign{
+class teamPro{
     constructor(id,date,name,deadLine,grade,submission) {
         this.id = id;
         this.date = date;
@@ -10,5 +10,5 @@ class Assign{
 }
 
 module.exports = {
-    Assign,
+    teamPro,
 };

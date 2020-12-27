@@ -3,11 +3,20 @@ var router = express.Router();
 const { getConnection } = require('typeorm');
 const puppeteer = require('puppeteer');
 
+//Database
 const Assign = require('../schemas/assign');
-const Subject = require('../schemas/subject');
+const College = require('../schemas/college');
+const Course = require('../schemas/course');
+const Quiz = require('../schemas/quiz');
+const Student = require('../schemas/student');
+const teamPro = require('../schemas/teamPro');
 
 const AssignMD = require('../models/assign').Assign;
-const SubjectMD = require('../models/subject').Subject;
+const CollegeMD = require('../models/college').College;
+const CourseMD = require('../models/course').Course;
+const QuizMD = require('../models/quiz').Quiz;
+const StudentMD = require('../models/student').Student;
+const teamProMD = require('../models/teamPro').teamPro;
 
 // 사용자의 계정정보를 담고있는 객체
 const signInfo = require('../signInfo').signInfo;
@@ -41,7 +50,7 @@ async function login(url){
 	const page = await browser.newPage();
 
 	await page.goto(url);
-	await screenshot(page);
+	//await screenshot(page);
 
 	await page.waitForSelector("div", {timeout: 10000});
 

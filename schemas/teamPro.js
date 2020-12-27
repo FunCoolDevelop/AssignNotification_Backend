@@ -1,9 +1,9 @@
 const EntitySchema = require('typeorm').EntitySchema;
-const Assign = require('../models/assign').Assign;
+const TeamPro = require('../models/assign').TeamPro;
 
 module.exports = new EntitySchema({
-    name: 'Assign',
-    target: Assign,
+    name: 'TeamPro',
+    target: TeamPro,
     columns: {
         id: {
             primary: true,

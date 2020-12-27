@@ -1,9 +1,9 @@
 const EntitySchema = require('typeorm').EntitySchema;
-const Assign = require('../models/assign').Assign;
+const Quiz = require('../models/assign').Quiz;
 
 module.exports = new EntitySchema({
-    name: 'Assign',
-    target: Assign,
+    name: 'Quiz',
+    target: Quiz,
     columns: {
         id: {
             primary: true,
