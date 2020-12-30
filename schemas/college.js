@@ -14,6 +14,11 @@ module.exports = new EntitySchema({
             type: 'varchar',
             length: 50,
             nullable: false
+        },
+        homeUrl: {
+            type: 'varchar',
+            length: 100,
+            nullable: false
         }
     }
 })

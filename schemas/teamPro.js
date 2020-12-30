@@ -10,7 +10,11 @@ module.exports = new EntitySchema({
             type: 'bigint',
             generated: true
         },
-        date: {
+        courseId: {
+            type: 'bigint',
+            nullable: false
+        },
+        uploadDate: {
             type: 'timestamp',
             default: () => 'CURRENT_TIMESTAMP',
             nullabel: true

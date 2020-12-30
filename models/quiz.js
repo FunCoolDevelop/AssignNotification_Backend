@@ -1,7 +1,8 @@
 class Quiz{
-    constructor(id,date,name,deadLine,grade,submission) {
+    constructor(id,courseId,uploadDate,name,deadLine,grade,submission) {
         this.id = id;
-        this.date = date;
+        this.courseId = courseId;
+        this.uploadDate = uploadDate;
         this.name = name;
         this.deadLine = deadLine;
         this.grade = grade;

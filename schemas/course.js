@@ -24,20 +24,10 @@ module.exports = new EntitySchema({
             length: 15,
             nullable: false
         },
-        assignIds: {
-            type: 'varchar',
-            length: 150,
-            nullable: true
-        },
-        quizIds: {
-            type: 'varchar',
-            length: 150,
-            nullable: true
-        },
-        teamProIds: {
-            type: 'varchar',
-            length: 150,
-            nullable: true
+        checkDate: {
+            type: 'timestamp',
+            default: () => 'CURRENT_TIMESTAMP',
+            nullabel: false
         },
     }
 })
