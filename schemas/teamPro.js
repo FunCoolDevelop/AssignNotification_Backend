@@ -21,7 +21,7 @@ module.exports = new EntitySchema({
         },
         name: {
             type: 'varchar',
-            length: 50,
+            length: 150,
             nullable: false
         },
         deadLine: {
