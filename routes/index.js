@@ -24,52 +24,27 @@ const signInfo = require('../signInfo').signInfo;
 
 router.get('/', function(req, res, next) {
 	const connection = getConnection();
-	const repository = connection.getRepository(Assign.options.name);
+	const repository = connection.getRepository(Student.options.name);
 	repository.find().then((result) => {
 		res.status(200).json(result);
 	});
 });
 
-// 사용자의 계정으로 로그인 필요 (자동 로그인 기능)
-const crawlUrl = "http://ecampus.konkuk.ac.kr/ilos/main/member/login_form.acl";
-
 router.get('/crawler', function(req, res, next) {
-	login(crawlUrl);
-	res.status(200).json("Crawler Initiated");
+	crawlEngine('http://localhost:8000/crawler/crawlAll');
+	res.status(200).json("Crawling Engine Manually Initiated");
 });
 
-async function screenshot(page){
-	await page.screenshot({path: "screenshots/test_" + Date.now().toString() + ".png"});
-	console.log("Took page screenshot");
-}
-
-async function login(url){
-	console.log("Signing into " + signInfo.username);
+async function crawlEngine(url){
+	console.log('Crawling Engine Initiated');
 
 	const browser = await puppeteer.launch();
 	const page = await browser.newPage();
 
-	await page.goto(url);
-	//await screenshot(page);
-
-	await page.waitForSelector("div", {timeout: 10000});
-
-	const result = await page.evaluate(() => {
-		let resultArr = [];
-
-		const tD1 = Array.from(document.querySelectorAll("div.utillmenu").values);
-		//const tD2 = document.documentElement.outerHTML;
-
-		resultArr.push(...tD1);
-		//resultArr.push(tD2);
-
-		return resultArr;
-	});
-	console.log(result);
+	await page.goto(url,{timeout: 0});
 	
 	await browser.close();
+	console.log('Crawling Engine Closed');
 }
-
-let subjectInfo = [];
 
 module.exports = router;
