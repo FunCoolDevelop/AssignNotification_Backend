@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 const { getConnection } = require('typeorm');
 const puppeteer = require('puppeteer');
+const cron = require('node-cron')
+const moment = require('moment')
 
 //Database
 const Assign = require('../schemas/assign');
@@ -18,9 +20,13 @@ const QuizMD = require('../models/quiz').Quiz;
 const StudentMD = require('../models/student').Student;
 const teamProMD = require('../models/teamPro').teamPro;
 
-// 사용자의 계정정보를 담고있는 객체
-const signInfo = require('../signInfo').signInfo;
+crawlUrl = 'http://localhost:8000/crawler/crawlAll';
 
+cron.schedule('0 0 0 * * *', () => {
+	timestmp = new Date().getTime().toLocaleString();
+	console.log('Cron processing / ' + moment().format('YYYY-MM-DD hh:mm:ss'));
+	crawlEngine(crawlUrl);
+});
 
 router.get('/', function(req, res, next) {
 	const connection = getConnection();
@@ -31,8 +37,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/crawler', function(req, res, next) {
-	crawlEngine('http://localhost:8000/crawler/crawlAll');
-	res.status(200).json("Crawling Engine Manually Initiated");
+	crawlEngine(crawlUrl);
+	res.status(200).json("Crawling engine manually initiated");
 });
 
 async function crawlEngine(url){
@@ -44,6 +50,7 @@ async function crawlEngine(url){
 	await page.goto(url,{timeout: 0});
 	
 	await browser.close();
+
 	console.log('Crawling Engine Closed');
 }
 
