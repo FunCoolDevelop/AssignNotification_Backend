@@ -22,8 +22,7 @@ const teamProMD = require('../models/teamPro').teamPro;
 
 crawlUrl = 'http://localhost:8000/crawler/crawlAll';
 
-cron.schedule('0 0 0 * * *', () => {
-	timestmp = new Date().getTime().toLocaleString();
+cron.schedule('0 2 0 * * *', () => {
 	console.log('Cron processing / ' + moment().format('YYYY-MM-DD hh:mm:ss'));
 	crawlEngine(crawlUrl);
 });
