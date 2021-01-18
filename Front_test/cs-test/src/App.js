@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 class App extends React.Component{
@@ -11,7 +10,7 @@ class App extends React.Component{
   }
 
   componentDidMount(){
-    fetch('api/group')
+    fetch('http://localhost:4000/hey')
     .then(res => res.json())
     .then(data => this.setState({username : data.username}));
   }

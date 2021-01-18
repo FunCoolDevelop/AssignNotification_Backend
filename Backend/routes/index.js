@@ -29,7 +29,7 @@ cron.schedule('0 2 0 * * *', () => {
 
 router.get('/', function(req, res, next) {
 	const connection = getConnection();
-	const repository = connection.getRepository(Student.options.name);
+	const repository = connection.getRepository(College.options.name);
 	repository.find().then((result) => {
 		res.status(200).json(result);
 	});
