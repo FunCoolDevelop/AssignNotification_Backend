@@ -1,7 +1,7 @@
 var express = require('express');
 var http = require('http');
 var path = require('path');
-var cors = require('cors');
+//var cors = require('cors');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const { createConnection } = require('typeorm');
@@ -15,7 +15,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cors());
+//app.use(cors());
 
 app.all('/*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "http://localhost:3000");

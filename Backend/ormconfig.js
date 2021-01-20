@@ -8,7 +8,7 @@ module.exports = {
   password: "1234",
   database: "assign_notification",
   entities: [
-    './schemas/*.js'
+    './schemas/*.js',
   ],
   namingStrategy: new SnakeNamingStrategy(),
   synchronize: true,

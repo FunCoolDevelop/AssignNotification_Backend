@@ -19,10 +19,19 @@ class App extends React.Component{
     const {username} = this.state;
     console.log(username);
     return (
-      <div className = "App">
-        <header className = "App-header">
+      <div>
+        <header>
           {username ? 'Hello ' + username : 'No username'}
         </header>
+        <form action="http://localhost:4000/transfer/signup" method="post">
+          <div style={{width: '30%'}} className="form-group">
+            <input  type="text" className="form-control" name="signid" placeholder="signid"/>
+            <input  type="text" className="form-control" name="signpw" placeholder="signpw"/>
+          </div>
+            <div style={{width: '30%'}}>
+              <button className="btn btn-success" type="submit">Create</button>
+            </div> 
+          </form>
       </div>
     )
   }

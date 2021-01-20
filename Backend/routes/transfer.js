@@ -18,7 +18,28 @@ const StudentMD = require('../models/student').Student;
 const teamProMD = require('../models/teamPro').teamPro;
 
 router.get('/', function(req, res, next) {
-    res.send({ username : "Express" });
+    res.send({ username : "Express json test" });
+});
+
+router.post('/signup', function(req, res, next) {
+    signup(req.body.signid, req.body.signpw);
+    res.status(200).json("SignUp");
+});
+
+async function signup(uid, upw){
+    console.log(uid + " " + upw);
+
+    let student = await getConnection()
+    .getRepository(StudentMD)
+    .createQueryBuilder("student")
+    .select("*")
+    .getMany();
+
+    console.log(student.name);
+}
+
+router.get('/login', function(req, res, next) {
+    res.status(200).json("Login");
 });
 
 module.exports = router;
