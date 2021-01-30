@@ -18,24 +18,36 @@ const StudentMD = require('../models/student').Student;
 const teamProMD = require('../models/teamPro').teamPro;
 
 router.get('/', function(req, res, next) {
-    res.send({ username : "Express json test" });
+    res.send({ uid : "test id" });
 });
 
 router.post('/signup', function(req, res, next) {
-    signup(req.body.signid, req.body.signpw);
+    signup(req.body.cid,req.body.name,req.body.signid, req.body.signpw);
     res.status(200).json("SignUp");
 });
 
-async function signup(uid, upw){
-    console.log(uid + " " + upw);
-
+async function signup(cid, name, uid, upw){
     let student = await getConnection()
     .getRepository(StudentMD)
-    .createQueryBuilder("student")
-    .select("*")
+    .createQueryBuilder("Student")
+    .select("Student")
     .getMany();
 
-    console.log(student.name);
+    for(i = 0;i < student.length;i++)
+        if(student[i].collegeId == cid && student[i].loginId == uid)
+            return;
+
+    await getConnection()
+    .createQueryBuilder()
+    .insert()
+    .into(StudentMD)
+    .values([
+      { collegeId: cid,
+        name: name,
+        loginId:uid,
+        loginPw:upw}
+    ])
+    .execute();
 }
 
 router.get('/login', function(req, res, next) {
