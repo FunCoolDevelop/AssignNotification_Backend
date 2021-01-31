@@ -5,19 +5,48 @@ class App extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-      uid:null
+      uid:null,
+      loginId:null,
+      loginPw:null
     }
+    this.login = this.login.bind(this);
+    this.handleId = this.handleId.bind(this);
+    this.handlePw = this.handlePw.bind(this);
   }
 
   componentDidMount(){
-    fetch('http://localhost:4000/transfer')
+    fetch('http://localhost:4000/loginVerify')
+    .then(res => res.json({loginId : this.state.loginId, 
+      loginPw : this.state.loginPw}))
+    .then(data => this.setState({uid : data.uid}));
+  }
+
+  login(e){
+    fetch('http://localhost:4000/loginVerify')
     .then(res => res.json())
     .then(data => this.setState({uid : data.uid}));
+
+    if(this.state.uid == null)
+      alert("로그인 실패!");
+
+    e.preventDefault();
+  }
+
+  handleId(e){
+    this.setState({
+      loginId: e.target.value,
+    });
+  }
+
+  handlePw(e){
+    this.setState({
+      loginPw: e.target.value,
+    });
   }
 
   render() {
     const {uid} = this.state;
-    console.log(uid);
+
     return (
       <div>
         <header>
@@ -32,6 +61,15 @@ class App extends React.Component{
           </div>
             <div style={{width: '30%'}}>
               <button className="btn btn-success" type="submit">SignUp</button>
+            </div> 
+          </form>
+          <form onSubmit={this.login}>
+          <div style={{width: '30%'}}>
+            <input  type="text" value={this.state.loginId} onChange={this.handleId} placeholder="loginId"/>
+            <input  type="text" value={this.state.loginPw} onChange={this.handlePw} placeholder="loginPw"/>
+          </div>
+            <div style={{width: '30%'}}>
+              <button type="submit">Login</button>
             </div> 
           </form>
       </div>

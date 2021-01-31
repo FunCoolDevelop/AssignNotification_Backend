@@ -21,6 +21,26 @@ router.get('/', function(req, res, next) {
     res.send({ uid : "test id" });
 });
 
+router.post('/loginVerify', async function(req, res, next) {
+    console.log("!!");
+
+    let student = await getConnection()
+    .getRepository(StudentMD)
+    .createQueryBuilder("Student")
+    .select("Student")
+    .getMany();
+
+    let nowUid = null;
+
+    console.log(res.body.loginId);
+
+    for(i = 0;i < student.length;i++)
+        if(res.body.loginId == student[i].loginId && res.body.loginPw == student[i].loginPw)
+            nowUid = student[i].id;
+
+    res.send({ uid : nowUid });
+});
+
 router.post('/signup', function(req, res, next) {
     signup(req.body.cid,req.body.name,req.body.signid, req.body.signpw);
     res.status(200).json("SignUp");
@@ -49,9 +69,5 @@ async function signup(cid, name, uid, upw){
     ])
     .execute();
 }
-
-router.get('/login', function(req, res, next) {
-    res.status(200).json("Login");
-});
 
 module.exports = router;
