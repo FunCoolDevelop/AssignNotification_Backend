@@ -7,8 +7,10 @@ class App extends React.Component{
     this.state = {
       uid:undefined,
       loginId:undefined,
-      loginPw:undefined
+      loginPw:undefined,
+      assignData:undefined
     }
+    this.getAssign = this.getAssign.bind(this);
     this.login = this.login.bind(this);
     this.handleId = this.handleId.bind(this);
     this.handlePw = this.handlePw.bind(this);
@@ -18,6 +20,26 @@ class App extends React.Component{
     fetch('http://localhost:4000/transfer')
     .then(res => res.json())
     .then(data => this.setState({uid : data.uid}));
+  }
+
+  getAssign(e){
+    const recipeUrl = 'http://localhost:4000/transfer/getAssign';
+    const postBody = {
+      uid : this.state.uid
+    };
+    const requestMetadata = {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(postBody)
+    };
+
+    fetch(recipeUrl, requestMetadata)
+    .then(res => res.json())
+    .then(data => this.setState({assignData : data.assignData}));
+
+    e.preventDefault();
   }
 
   login(e){
@@ -40,9 +62,6 @@ class App extends React.Component{
     .then(res => res.json())
     .then(data => this.setState({uid : data.uid}));
 
-    if(this.state.uid)
-      alert("로그인 실패!");
-
     e.preventDefault();
   }
 
@@ -60,12 +79,16 @@ class App extends React.Component{
 
   render() {
     const {uid} = this.state;
+    const {assignData} = this.state;
 
     return (
       <div>
         <header>
           {uid ? 'UID : ' + uid : 'No userinfo'}
         </header>
+
+        <hr size="1" width="100%" color="red"/>
+
         <form action="http://localhost:4000/transfer/signup" method="post">
           <div style={{width: '30%'}} className="form-group">
             <input  type="text" className="form-control" name="cid" placeholder="cid"/>
@@ -82,8 +105,8 @@ class App extends React.Component{
 
           <form onSubmit={this.login}>
           <div style={{width: '30%'}}>
-            <input  type="text" value={this.state.loginId} onChange={this.handleId} placeholder="loginId"/>
-            <input  type="text" value={this.state.loginPw} onChange={this.handlePw} placeholder="loginPw"/>
+            <input  type="text" value={this.state.loginId} onChange={this.handleId} placeholder="signId"/>
+            <input  type="password" value={this.state.loginPw} onChange={this.handlePw} placeholder="signPw"/>
           </div>
             <div style={{width: '30%'}}>
               <button type="submit">Login</button>
@@ -91,7 +114,13 @@ class App extends React.Component{
           </form>
 
           <hr size="1" width="100%" color="red"/>
-          
+
+          <div>
+            <p>
+              {assignData ? assignData : 'No AssignData'}
+            </p>
+            <button onClick={this.getAssign}>getAssign</button>
+          </div>
       </div>
     )
   }

@@ -1,5 +1,5 @@
 const EntitySchema = require('typeorm').EntitySchema;
-const Course = require('../models/assign').Course;
+const Course = require('../models/course').Course;
 
 module.exports = new EntitySchema({
     name: 'Course',

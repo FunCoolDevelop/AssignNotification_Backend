@@ -18,7 +18,54 @@ const StudentMD = require('../models/student').Student;
 const teamProMD = require('../models/teamPro').teamPro;
 
 router.get('/', function(req, res, next) {
-    res.send({ uid : "test id" });
+    res.send({ uid : "GET test" });
+});
+
+router.post('/getAssign', async function(req, res, next) {
+    let uid = req.body.uid;
+    let assignData = [];
+
+    try{
+        let student = await getConnection()
+        .getRepository(StudentMD)
+        .createQueryBuilder("Student")
+        .where("student.id = :tmp", { tmp: uid })
+        .getOne();
+
+        let cids = (student.courseIds).split(';');
+        for(i = 0;i < cids.length - 1;i++){
+            let csTmp = [];
+
+            let course = await getConnection()
+            .getRepository(CourseMD)
+            .createQueryBuilder("Course")
+            .where("course.id = :tmp", { tmp: cids[i] })
+            .getOne();
+
+            csTmp.push(course.name);
+
+            let assign = await getConnection()
+            .getRepository(AssignMD)
+            .createQueryBuilder("assign")
+            .where("assign.courseId = :tmp", { tmp: cids[i] })
+            .getMany();
+
+            for(j = 0;j < assign.length;j++){
+                let asTmp = [];
+                asTmp.push(assign[j].name);
+                //asTmp.push(assign[j].uploadDate);
+                asTmp.push(assign[j].deadLine);
+                asTmp.push(assign[j].grade);
+                //asTmp.push(assign[j].submission);
+                csTmp.push(asTmp);
+            }
+            assignData.push(csTmp);
+        }
+    }catch(e){
+        console.log("DataBase Omission \n" + e);
+    }
+    //console.log(assignData);
+    res.send({ assignData : assignData });
 });
 
 router.post('/loginVerify', async function(req, res, next) {
