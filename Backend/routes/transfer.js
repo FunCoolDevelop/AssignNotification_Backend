@@ -22,8 +22,6 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/loginVerify', async function(req, res, next) {
-    console.log("!!");
-
     let student = await getConnection()
     .getRepository(StudentMD)
     .createQueryBuilder("Student")
@@ -32,12 +30,13 @@ router.post('/loginVerify', async function(req, res, next) {
 
     let nowUid = null;
 
-    console.log(res.body.loginId);
-
-    for(i = 0;i < student.length;i++)
-        if(res.body.loginId == student[i].loginId && res.body.loginPw == student[i].loginPw)
-            nowUid = student[i].id;
-
+    try{
+        for(i = 0;i < student.length;i++)
+            if(req.body.loginId == student[i].loginId && req.body.loginPw == student[i].loginPw)
+                nowUid = student[i].id;
+    }catch(e){
+        console.log("Body undefined");
+    }
     res.send({ uid : nowUid });
 });
 
