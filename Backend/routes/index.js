@@ -20,8 +20,6 @@ const QuizMD = require('../models/quiz').Quiz;
 const StudentMD = require('../models/student').Student;
 const teamProMD = require('../models/teamPro').teamPro;
 
-crawlUrl = 'http://localhost:8000/crawler/crawlAll';
-
 cron.schedule('0 2 0 * * *', () => {
 	console.log('Cron processing / ' + moment().format('YYYY-MM-DD hh:mm:ss'));
 	crawlEngine(crawlUrl);
@@ -36,6 +34,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/crawler', function(req, res, next) {
+	crawlUrl = 'http://localhost:8000/crawler/crawlAll';
 	crawlEngine(crawlUrl);
 	res.status(200).json("Crawling engine manually initiated");
 });

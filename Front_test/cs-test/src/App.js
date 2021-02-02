@@ -5,7 +5,7 @@ class App extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-      uid:undefined,
+      sid:undefined,
       loginId:undefined,
       loginPw:undefined,
       assignData:undefined
@@ -14,18 +14,19 @@ class App extends React.Component{
     this.login = this.login.bind(this);
     this.handleId = this.handleId.bind(this);
     this.handlePw = this.handlePw.bind(this);
+    this.crawl = this.crawl.bind(this);
   }
 
   componentDidMount(){
     fetch('http://localhost:4000/transfer')
     .then(res => res.json())
-    .then(data => this.setState({uid : data.uid}));
+    .then(data => this.setState({sid : data.sid}));
   }
 
   getAssign(e){
     const recipeUrl = 'http://localhost:4000/transfer/getAssign';
     const postBody = {
-      uid : this.state.uid
+      sid : this.state.sid
     };
     const requestMetadata = {
       method: 'POST',
@@ -60,7 +61,7 @@ class App extends React.Component{
 
     fetch(recipeUrl, requestMetadata)
     .then(res => res.json())
-    .then(data => this.setState({uid : data.uid}));
+    .then(data => this.setState({sid : data.sid}));
 
     e.preventDefault();
   }
@@ -77,14 +78,33 @@ class App extends React.Component{
     });
   }
 
+  crawl(e){
+    const recipeUrl = 'http://localhost:4000/transfer/crawl';
+    const postBody = {
+      sid : this.state.sid
+    };
+    const requestMetadata = {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(postBody)
+    };
+
+    fetch(recipeUrl, requestMetadata)
+    .then(res => res.json())
+
+    e.preventDefault();
+  }
+
   render() {
-    const {uid} = this.state;
+    const {sid} = this.state;
     const {assignData} = this.state;
 
     return (
       <div>
         <header>
-          {uid ? 'UID : ' + uid : 'No userinfo'}
+          {sid ? 'UID : ' + sid : 'No userinfo'}
         </header>
 
         <hr size="1" width="100%" color="red"/>
@@ -120,6 +140,12 @@ class App extends React.Component{
               {assignData ? assignData : 'No AssignData'}
             </p>
             <button onClick={this.getAssign}>getAssign</button>
+          </div>
+
+          <hr size="1" width="100%" color="red"/>
+
+          <div>
+            <button onClick={this.crawl}>crawlSingle</button>
           </div>
       </div>
     )

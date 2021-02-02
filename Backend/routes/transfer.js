@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const puppeteer = require('puppeteer');
 const { getConnection } = require('typeorm');
 
 //Database
@@ -18,18 +19,18 @@ const StudentMD = require('../models/student').Student;
 const teamProMD = require('../models/teamPro').teamPro;
 
 router.get('/', function(req, res, next) {
-    res.send({ uid : "GET test" });
+    res.send({ sid : "GET test" });
 });
 
 router.post('/getAssign', async function(req, res, next) {
-    let uid = req.body.uid;
+    let sid = req.body.sid;
     let assignData = [];
 
     try{
         let student = await getConnection()
         .getRepository(StudentMD)
         .createQueryBuilder("Student")
-        .where("student.id = :tmp", { tmp: uid })
+        .where("student.id = :tmp", { tmp: sid })
         .getOne();
 
         let cids = (student.courseIds).split(';');
@@ -75,16 +76,25 @@ router.post('/loginVerify', async function(req, res, next) {
     .select("Student")
     .getMany();
 
-    let nowUid = null;
+    let nowSid = null;
 
     try{
         for(i = 0;i < student.length;i++)
             if(req.body.loginId == student[i].loginId && req.body.loginPw == student[i].loginPw)
-                nowUid = student[i].id;
+                nowSid = student[i].id;
+
+        //crawlSingle(nowSid);
     }catch(e){
         console.log("Body undefined");
     }
-    res.send({ uid : nowUid });
+    res.send({ sid : nowSid });
+});
+
+router.post('/crawl', async function(req, res, next) {
+    nowSid = req.body.sid;
+    if(nowSid)
+        crawlSingle(nowSid);
+    res.status(200).json("Crawl");
 });
 
 router.post('/signup', function(req, res, next) {
@@ -114,6 +124,21 @@ async function signup(cid, name, uid, upw){
         loginPw:upw}
     ])
     .execute();
+}
+
+async function crawlSingle(sid){
+    crawlUrl = 'http://localhost:8000/crawler/' + sid;
+	
+	console.log('Crawling Engine Initiated');
+
+	const browser = await puppeteer.launch();
+	const page = await browser.newPage();
+
+	await page.goto(crawlUrl,{timeout: 0});
+	
+	await browser.close();
+
+	console.log('Crawling Engine Closed');
 }
 
 module.exports = router;
